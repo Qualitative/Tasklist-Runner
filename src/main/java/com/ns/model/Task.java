@@ -10,7 +10,7 @@ public class Task {
     private String name;
     private int pid;
     private String sessionName;
-    private String sessionNumber;
+    private int sessionNumber;
     private long memoryUsage;
     private Status status;
     private String userName;
@@ -43,11 +43,11 @@ public class Task {
         this.sessionName = sessionName;
     }
 
-    public String getSessionNumber() {
+    public int getSessionNumber() {
         return sessionNumber;
     }
 
-    public void setSessionNumber(String sessionNumber) {
+    public void setSessionNumber(int sessionNumber) {
         this.sessionNumber = sessionNumber;
     }
 
