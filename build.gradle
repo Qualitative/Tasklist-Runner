@@ -1,0 +1,56 @@
+import java.nio.file.Files;
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+project.sourceCompatibility = 1.8
+project.targetCompatibility = 1.8
+project.mainClassName = 'com.ns.Application'
+project.group = 'com.ns'
+project.version = '0.0.1 - SNAPSHOT'
+
+ext {
+    springVersion = '4.1.6.RELEASE'
+    junitVersion = '4.12'
+    slf4jVersion = '1.7.12'
+    guavaVersion = '18.0'
+    logbackVersion = '1.1.3'
+}
+
+repositories { jcenter() }
+
+dependencies {
+    compile "org.springframework:spring-core:${springVersion}"
+    compile "org.springframework:spring-context:${springVersion}"
+    compile "org.springframework:spring-beans:${springVersion}"
+
+    compile "com.google.guava:guava:${guavaVersion}"
+    compile "ch.qos.logback:logback-classic:${logbackVersion}"
+
+    testCompile "junit:junit:${junitVersion}"
+}
+
+task 'createSourceDirectories' << {
+    println """
+                ------------------------------
+                Creating source directories...
+                ------------------------------
+            """.stripIndent()
+
+    project.sourceSets.each { sourceSet ->
+        sourceSet.allSource.getSrcDirs().each { dir -> createDirectory(dir) }
+    }
+}
+
+createSourceDirectories.description = 'Creates source directories'
+
+private def createDirectory(File dir) {
+    java.nio.file.Path dirPath = dir.toPath()
+    if(Files.exists(dirPath)) {
+        println "Directory $dir already exists"
+    } else if(Files.createDirectories(dirPath)) {
+        println "Directory $dir created"
+    } else {
+        println "Couldn't create $dir directory"
+    }
+}
