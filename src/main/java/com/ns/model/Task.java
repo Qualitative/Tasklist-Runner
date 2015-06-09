@@ -107,4 +107,49 @@ public class Task {
         this.services = services;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + pid;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Task other = (Task) obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (pid != other.pid)
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder()
+                .append("Task [name=").append(name)
+                .append(", pid=").append(pid)
+                .append(", sessionName=").append(sessionName)
+                .append(", sessionNumber=").append(sessionNumber)
+                .append(", memoryUsage=").append(memoryUsage)
+                .append(", status=").append(status)
+                .append(", userName=").append(userName)
+                .append(", cpuTime=").append(cpuTime)
+                .append(", windowTitle=").append(windowTitle)
+                .append(", modules=").append(modules)
+                .append(", services=").append(services)
+                .append("]").toString();
+    }
+
 }

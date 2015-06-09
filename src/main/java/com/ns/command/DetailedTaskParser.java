@@ -2,20 +2,28 @@ package com.ns.command;
 
 import java.time.Duration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ns.exception.ParseException;
 import com.ns.model.Status;
 import com.ns.model.Task;
 
 public class DetailedTaskParser implements Parser<Task> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(DetailedTaskParser.class);
+
     @Override
     public Task parse(String string) throws ParseException {
+        LOG.debug("Parsing [{}] detailed task string", string);
         String stringWithoutFirstAndLastChars = string.trim().substring(1, string.length() - 1);
         String[] values = stringWithoutFirstAndLastChars.split("\",\"");
 
         int numberOfValues = values.length;
         if (numberOfValues != 9) {
-            throw new ParseException("Can't parse detailed task string - wrong number of values: " + numberOfValues + ". Expected 9.");
+            LOG.error("String has wrong number of values: {}. Expected 9.", numberOfValues);
+            throw new ParseException("Can't parse detailed task string - wrong number of values: " + numberOfValues
+                    + ". Expected 9.");
         }
 
         try {
@@ -29,8 +37,10 @@ public class DetailedTaskParser implements Parser<Task> {
             task.setUserName(values[6]);
             task.setCpuTime(getCpuTime(values[7]));
             task.setWindowTitle(values[8]);
+            LOG.debug("Created {}", task);
             return task;
         } catch (Exception e) {
+            LOG.error("Exception occured while parsing task string", e);
             throw new ParseException("Can't parse detailed task string - malformad value", e);
         }
     }
