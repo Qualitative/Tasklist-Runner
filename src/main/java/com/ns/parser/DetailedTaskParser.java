@@ -1,4 +1,4 @@
-package com.ns.command;
+package com.ns.parser;
 
 import java.time.Duration;
 

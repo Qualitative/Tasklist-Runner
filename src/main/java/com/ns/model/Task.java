@@ -3,6 +3,8 @@ package com.ns.model;
 import java.time.Duration;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DurationFormatUtils;
+
 import com.google.common.collect.Lists;
 
 public class Task {
@@ -145,7 +147,7 @@ public class Task {
                 .append(", memoryUsage=").append(memoryUsage)
                 .append(", status=").append(status)
                 .append(", userName=").append(userName)
-                .append(", cpuTime=").append(cpuTime)
+                .append(", cpuTime=").append(DurationFormatUtils.formatDuration(cpuTime.toMillis(), "H:mm:ss"))
                 .append(", windowTitle=").append(windowTitle)
                 .append(", modules=").append(modules)
                 .append(", services=").append(services)

@@ -22,5 +22,10 @@ public enum Status {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     private String name;
 }

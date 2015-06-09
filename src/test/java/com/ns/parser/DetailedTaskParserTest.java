@@ -1,4 +1,4 @@
-package com.ns.command;
+package com.ns.parser;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import com.ns.exception.ParseException;
 import com.ns.model.Status;
 import com.ns.model.Task;
+import com.ns.parser.DetailedTaskParser;
 
 
 public class DetailedTaskParserTest {
