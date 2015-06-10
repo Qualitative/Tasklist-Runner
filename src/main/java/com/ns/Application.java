@@ -22,6 +22,5 @@ public class Application {
         CommandConfiguration<List<Task>> tasklist = (CommandConfiguration<List<Task>>) applicationContext
                 .getBean("tasklistConfiguration");
         tasklist.run(Lists.newArrayList("tasklist", "/v", "/fo", "csv", "/nh"));
-
     }
 }

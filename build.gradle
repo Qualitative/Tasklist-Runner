@@ -38,8 +38,8 @@ dependencies {
     testCompile "org.springframework:spring-test:${springVersion}"
 }
 
-compileJava {
-    options.encoding = "UTF-8"
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
 
 task 'createSourceDirectories' << {

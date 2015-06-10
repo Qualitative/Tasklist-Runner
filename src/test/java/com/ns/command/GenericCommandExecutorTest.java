@@ -7,7 +7,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.util.List;
 
 import org.junit.Before;
@@ -31,6 +31,7 @@ public class GenericCommandExecutorTest {
             + "second string\n" + "another not important string";
 
     private static final List<String> COMMAND = Lists.newArrayList("any", "command");
+    private static final List<String> WRAPPED_COMMAND = Lists.newArrayList("cmd", "/c", "chcp","65001", "&", "any", "command");
 
     private File file = mock(File.class);
     private Process process = mock(Process.class);
@@ -48,10 +49,10 @@ public class GenericCommandExecutorTest {
         when(processBuilder.start()).thenReturn(process);
         when(process.waitFor()).thenReturn(0);
 
-        FileReader fr = new FileReader(getFile(FILE_NAME));
+        FileInputStream fis = new FileInputStream(getFile(FILE_NAME));
 
-        PowerMockito.whenNew(ProcessBuilder.class).withArguments(COMMAND).thenReturn(processBuilder);
-        PowerMockito.whenNew(FileReader.class).withArguments(file).thenReturn(fr);
+        PowerMockito.whenNew(ProcessBuilder.class).withArguments(WRAPPED_COMMAND).thenReturn(processBuilder);
+        PowerMockito.whenNew(FileInputStream.class).withArguments(file).thenReturn(fis);
     }
 
     @Test
