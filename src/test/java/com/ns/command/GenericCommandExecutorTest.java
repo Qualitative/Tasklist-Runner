@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.List;
 
-import org.gradle.jarjar.com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +17,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.google.common.collect.Lists;
 import com.ns.exception.ExecutionException;
 
 @RunWith(PowerMockRunner.class)
