@@ -18,7 +18,7 @@ public class Application {
 
     public static void main(String[] args) {
         LOG.debug("Start application");
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/application-context.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/command-execution-service-context.xml");
         CommandConfiguration<List<Task>> tasklist = (CommandConfiguration<List<Task>>) applicationContext
                 .getBean("tasklistConfiguration");
         tasklist.run(Lists.newArrayList("tasklist", "/v", "/fo", "csv", "/nh"));
