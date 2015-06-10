@@ -60,6 +60,8 @@ public class GenericCommandExecutor implements Executor {
         try (FileInputStream fis = new FileInputStream(file);
              InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
              BufferedReader in = new BufferedReader(isr);) {
+            // Remove record with current code page
+            in.readLine();
             int c;
             while ((c = in.read()) != -1) {
                 builder.append((char) c);

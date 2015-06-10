@@ -54,6 +54,7 @@ public class VerboseLineTaskParser implements Parser<Task> {
                 throw new ParseException("Task string is a quote");
             }
         } else {
+            //TODO: handle case with a string before single quote - to prevent data lose
             LOG.warn("Task string doesn't have mandatory quotes at the line's beginning and ending");
             throw new ParseException("Task string doesn't have mandatory quotes at the line's beginning and ending");
         }
