@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.time.Duration;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,10 +13,9 @@ import com.google.common.collect.Lists;
 import com.ns.exception.ParseException;
 import com.ns.model.Status;
 import com.ns.model.Task;
-import com.ns.parser.DetailedTaskParser;
+import com.ns.parser.VerboseLineTaskParser;
 
-
-public class DetailedTaskParserTest {
+public class VerboseLineTaskParserTest {
 
     private static final String COLON = ":";
     private static final String SEMICOLON = ";";
@@ -32,32 +32,29 @@ public class DetailedTaskParserTest {
     private static final long EXPECTED_MEMORY_USAGE = 1234567;
     private static final Status EXPECTED_STATUS = Status.UNKNOWN;
     private static final String EXPECTED_USER_NAME = "NT AUTHORITY\\СИСТЕМА";
-    private static final Duration EXPECTED_CPU_TIME = Duration.ZERO.plusHours(HOURS).plusMinutes(MINUTES).plusSeconds(SECONDS);
+    private static final Duration EXPECTED_CPU_TIME = Duration.ZERO.plusHours(HOURS).plusMinutes(MINUTES)
+            .plusSeconds(SECONDS);
     private static final String EXPECTED_WINDOW_TITLE = "Н/Д";
     private static final List<String> EXPECTED_MODULES = Lists.newArrayList();
     private static final List<String> EXPECTED_SERVICES = Lists.newArrayList();
 
-    private static final StringBuilder STRING_BUILDER = new StringBuilder()
-                        .append(QUOTE).append(EXPECTED_NAME)
-                        .append(QUOTE_COMMA_QUOTE).append(EXPECTED_PID)
-                        .append(QUOTE_COMMA_QUOTE).append(EXPECTED_SESSION_NAME)
-                        .append(QUOTE_COMMA_QUOTE).append(EXPECTED_SESSION_NUMBER)
-                        .append(QUOTE_COMMA_QUOTE).append(EXPECTED_MEMORY_USAGE).append(MEMORY_SUFFIX)
-                        .append(QUOTE_COMMA_QUOTE).append(EXPECTED_STATUS.name())
-                        .append(QUOTE_COMMA_QUOTE).append(EXPECTED_USER_NAME)
-                        .append(QUOTE_COMMA_QUOTE).append(HOURS).append(COLON).append(MINUTES).append(COLON).append(SECONDS)
-                        .append(QUOTE_COMMA_QUOTE).append(EXPECTED_WINDOW_TITLE)
-                        .append(QUOTE);
+    private static final StringBuilder STRING_BUILDER = new StringBuilder().append(QUOTE).append(EXPECTED_NAME)
+            .append(QUOTE_COMMA_QUOTE).append(EXPECTED_PID).append(QUOTE_COMMA_QUOTE).append(EXPECTED_SESSION_NAME)
+            .append(QUOTE_COMMA_QUOTE).append(EXPECTED_SESSION_NUMBER).append(QUOTE_COMMA_QUOTE)
+            .append(EXPECTED_MEMORY_USAGE).append(MEMORY_SUFFIX).append(QUOTE_COMMA_QUOTE)
+            .append(EXPECTED_STATUS.name()).append(QUOTE_COMMA_QUOTE).append(EXPECTED_USER_NAME)
+            .append(QUOTE_COMMA_QUOTE).append(HOURS).append(COLON).append(MINUTES).append(COLON).append(SECONDS)
+            .append(QUOTE_COMMA_QUOTE).append(EXPECTED_WINDOW_TITLE).append(QUOTE);
 
     private static final String DETAILED_TASK_STRING = STRING_BUILDER.toString();
 
     private static final String TASK_STRING_WITH_WRONG_NUMBER_OF_VALUES = "\"Some task name\",\"and service only\"";
 
-    private DetailedTaskParser parser;
+    private VerboseLineTaskParser parser;
 
     @Before
     public void init() {
-        parser = new DetailedTaskParser();
+        parser = new VerboseLineTaskParser();
     }
 
     @Test
@@ -90,6 +87,36 @@ public class DetailedTaskParserTest {
         String malformedString = DETAILED_TASK_STRING.replaceAll(COLON, SEMICOLON);
         // When
         parser.parse(malformedString);
+    }
+
+    @Test(expected = ParseException.class)
+    public void shouldThrowExceptionWhenStringIsNull() throws Exception {
+        // When
+        parser.parse(null);
+    }
+
+    @Test(expected = ParseException.class)
+    public void shouldThrowExceptionWhenStringIsEmpty() throws Exception {
+        // When
+        parser.parse(StringUtils.EMPTY);
+    }
+
+    @Test(expected = ParseException.class)
+    public void shouldThrowExceptionWhenStringContainsSingleQuote() throws Exception {
+        // When
+        parser.parse("\"");
+    }
+
+    @Test(expected = ParseException.class)
+    public void shouldThrowExceptionWhenStringDoesNotStartWithQuote() throws Exception {
+        // When
+        parser.parse("\"some string");
+    }
+
+    @Test(expected = ParseException.class)
+    public void shouldThrowExceptionWhenStringDoesNotEndWithQuote() throws Exception {
+        // When
+        parser.parse("some string\"");
     }
 
 }

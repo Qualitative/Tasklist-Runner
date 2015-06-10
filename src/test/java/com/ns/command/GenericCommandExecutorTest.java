@@ -7,7 +7,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.util.List;
 
 import org.gradle.jarjar.com.google.common.collect.Lists;
@@ -26,11 +26,9 @@ public class GenericCommandExecutorTest {
 
     private static final String FILE_NAME = "test-command-output.tmp";
 
-    private static final String FIRST_LINE = "\"razertra.exe\",\"1412\",\"Console\",\"1\",\"6 724 КБ\",\"Running\",\"aGressOr-PC\\aGressOr\",\"0:00:00\",\"RazerAbyssusTrayIcon\"";
-    private static final String SECOND_LINE = "second string";
-    private static final String THIRD_LINE = "another not important string";
-
-    private static final List<String> EXPECTED_OUTPUT = Lists.newArrayList(FIRST_LINE, SECOND_LINE, THIRD_LINE);
+    // check line separator value - it should be the same in file and in this string
+    private static final String EXPECTED_OUTPUT = "\"razertra.exe\",\"1412\",\"Console\",\"1\",\"6 724 КБ\",\"Running\",\"aGressOr-PC\\aGressOr\",\"0:00:00\",\"RazerAbyssusTrayIcon\"\n"
+            + "second string\n" + "another not important string";
 
     private static final List<String> COMMAND = Lists.newArrayList("any", "command");
 
@@ -50,16 +48,16 @@ public class GenericCommandExecutorTest {
         when(processBuilder.start()).thenReturn(process);
         when(process.waitFor()).thenReturn(0);
 
-        FileInputStream fis = new FileInputStream(getFile(FILE_NAME));
+        FileReader fr = new FileReader(getFile(FILE_NAME));
 
         PowerMockito.whenNew(ProcessBuilder.class).withArguments(COMMAND).thenReturn(processBuilder);
-        PowerMockito.whenNew(FileInputStream.class).withArguments(file).thenReturn(fis);
+        PowerMockito.whenNew(FileReader.class).withArguments(file).thenReturn(fr);
     }
 
     @Test
     public void shouldRedirectCommandOutputToFileAndThenReturnItsLines() throws Exception {
         // When
-        List<String> output = executor.execute(COMMAND);
+        String output = executor.execute(COMMAND);
         // Then
         assertEquals(EXPECTED_OUTPUT, output);
         verifyMocks();
