@@ -7,17 +7,21 @@
 
     <bean id="genericCommandExecutor" class="com.ns.command.GenericCommandExecutor" />
 
-    <bean id="verboseTaskParser" class="com.ns.parser.VerboseTaskParser">
-        <constructor-arg ref="verboseLineTaskParser" />
+    <bean id="tasklistCsvFormatParser" class="com.ns.parser.TasklistCsvFormatParser">
+        <constructor-arg ref="verboseCsvLineTaskParser" />
     </bean>
 
-    <bean id="verboseLineTaskParser" class="com.ns.parser.VerboseLineTaskParser" />
+    <bean id="verboseCsvLineTaskParser" class="com.ns.parser.VerboseCsvLineTaskParser" />
 
-    <bean id="taskListProcessor" class="com.ns.processor.TaskListProcessor" />
+    <bean id="taskListProcessor" class="com.ns.processor.TaskListProcessor" >
+        <constructor-arg ref="inMemoryTaskDao"/>
+    </bean>
+
+    <bean id="inMemoryTaskDao" class="com.ns.dao.InMemoryTaskDao"/>
 
     <bean id="tasklistConfiguration" class="com.ns.configuration.CommandConfiguration">
         <constructor-arg ref="genericCommandExecutor" />
-        <constructor-arg ref="verboseTaskParser" />
+        <constructor-arg ref="tasklistCsvFormatParser" />
         <constructor-arg ref="taskListProcessor" />
     </bean>
 

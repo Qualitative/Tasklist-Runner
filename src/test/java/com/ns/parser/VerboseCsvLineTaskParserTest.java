@@ -13,9 +13,9 @@ import com.google.common.collect.Lists;
 import com.ns.exception.ParseException;
 import com.ns.model.Status;
 import com.ns.model.Task;
-import com.ns.parser.VerboseLineTaskParser;
+import com.ns.parser.VerboseCsvLineTaskParser;
 
-public class VerboseLineTaskParserTest {
+public class VerboseCsvLineTaskParserTest {
 
     private static final String COLON = ":";
     private static final String SEMICOLON = ";";
@@ -50,11 +50,11 @@ public class VerboseLineTaskParserTest {
 
     private static final String TASK_STRING_WITH_WRONG_NUMBER_OF_VALUES = "\"Some task name\",\"and service only\"";
 
-    private VerboseLineTaskParser parser;
+    private VerboseCsvLineTaskParser parser;
 
     @Before
     public void init() {
-        parser = new VerboseLineTaskParser();
+        parser = new VerboseCsvLineTaskParser();
     }
 
     @Test

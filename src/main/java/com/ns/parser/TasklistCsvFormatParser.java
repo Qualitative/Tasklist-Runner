@@ -12,13 +12,13 @@ import com.google.common.collect.Lists;
 import com.ns.exception.ParseException;
 import com.ns.model.Task;
 
-public class VerboseTaskParser implements Parser<List<Task>> {
+public class TasklistCsvFormatParser implements Parser<List<Task>> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(VerboseTaskParser.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TasklistCsvFormatParser.class);
 
     private Parser<Task> parser;
 
-    public VerboseTaskParser(Parser<Task> parser) {
+    public TasklistCsvFormatParser(Parser<Task> parser) {
         this.parser = checkNotNull(parser);
     }
 

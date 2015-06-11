@@ -21,7 +21,7 @@ import com.ns.exception.ParseException;
 import com.ns.model.Task;
 
 @RunWith(MockitoJUnitRunner.class)
-public class VerboseTaskParserTest {
+public class TasklistCsvFormatParserTest {
 
     private static final Task TASK_A = new Task();
     private static final Task TASK_B = new Task();
@@ -30,9 +30,9 @@ public class VerboseTaskParserTest {
     private static final String OUTPUT = TASK_A_STRING + "\n" + TASK_B_STRING;
 
     @Mock
-    private VerboseLineTaskParser lineParser;
+    private VerboseCsvLineTaskParser lineParser;
 
-    private VerboseTaskParser parser;
+    private TasklistCsvFormatParser parser;
 
     @Before
     public void init() throws Exception {
@@ -41,12 +41,12 @@ public class VerboseTaskParserTest {
         when(lineParser.parse(TASK_A_STRING)).thenReturn(TASK_A);
         when(lineParser.parse(TASK_B_STRING)).thenReturn(TASK_B);
 
-        parser = new VerboseTaskParser(lineParser);
+        parser = new TasklistCsvFormatParser(lineParser);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldThrowExceptionWhenLineParserIsNull() {
-        new VerboseTaskParser(null);
+        new TasklistCsvFormatParser(null);
     }
 
     @Test(expected = ParseException.class)

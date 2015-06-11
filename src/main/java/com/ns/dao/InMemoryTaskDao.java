@@ -1,5 +1,7 @@
 package com.ns.dao;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,36 +30,34 @@ public class InMemoryTaskDao implements TaskDao {
 
     @Override
     public void saveOrUpdateTask(Task task) {
+        checkNotNull(task);
         int pid = task.getPid();
         Task savedTask = tasks.get(pid);
         if(savedTask == null) {
-            LOG.debug("No task with pid {} was found. Saving task as new", pid);
+            LOG.debug("No task with pid {} was found. Saving new", pid);
             tasks.put(pid, task);
         } else {
             LOG.debug("Task with pid {} is found. Merging values", pid);
-            merge(savedTask, task);
+            Task mergedTask = savedTask.merge(task);
+            tasks.put(pid, mergedTask);
         }
     }
 
     @Override
     public void removeTask(Task task) {
+        checkNotNull(task);
         int pid = task.getPid();
         Task removed = tasks.remove(pid);
         if (removed != null) {
-            LOG.debug("Task [{}] with pid [{}] has been removed", task.getName(), task.getPid());
+            LOG.debug("Task with pid [{}] has been removed", pid);
         } else {
-            LOG.debug("Can't remove task. Task [{}] with pid [{}] was not found", task.getName(), task.getPid());
+            LOG.debug("Can't remove task. Task with pid [{}] was not found", pid);
         }
     }
 
     @Override
     public void removeAllTasks() {
         tasks.clear();
-    }
-
-    // TODO: implement function
-    private void merge(Task savedTask, Task task) {
-
     }
 
 }

@@ -10,9 +10,10 @@ import com.ns.exception.ParseException;
 import com.ns.model.Status;
 import com.ns.model.Task;
 
-public class VerboseLineTaskParser implements Parser<Task> {
+// TODO: extract generic logic to abstract class. Use template pattern
+public class VerboseCsvLineTaskParser implements Parser<Task> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(VerboseLineTaskParser.class);
+    private static final Logger LOG = LoggerFactory.getLogger(VerboseCsvLineTaskParser.class);
 
     @Override
     public Task parse(String string) throws ParseException {
