@@ -5,18 +5,16 @@ import static org.junit.Assert.assertEquals;
 import java.time.Duration;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
 import com.ns.exception.ParseException;
 import com.ns.model.Status;
 import com.ns.model.Task;
-import com.ns.parser.VerboseCsvLineTaskParser;
 
-public class VerboseCsvLineTaskParserTest {
+public class VerboseCsvLineTaskParserTest extends AbstractCsvLineTaskParserTest {
 
+    private static final int COLUMNS_NUMBER = 9;
     private static final String COLON = ":";
     private static final String SEMICOLON = ";";
     private static final String QUOTE = "\"";
@@ -46,21 +44,25 @@ public class VerboseCsvLineTaskParserTest {
             .append(QUOTE_COMMA_QUOTE).append(HOURS).append(COLON).append(MINUTES).append(COLON).append(SECONDS)
             .append(QUOTE_COMMA_QUOTE).append(EXPECTED_WINDOW_TITLE).append(QUOTE);
 
-    private static final String DETAILED_TASK_STRING = STRING_BUILDER.toString();
-
-    private static final String TASK_STRING_WITH_WRONG_NUMBER_OF_VALUES = "\"Some task name\",\"and service only\"";
+    private static final String TASK_STRING = STRING_BUILDER.toString();
 
     private VerboseCsvLineTaskParser parser;
 
-    @Before
-    public void init() {
-        parser = new VerboseCsvLineTaskParser();
+    @Override
+    protected Parser<Task> getParser() {
+        parser = new VerboseCsvLineTaskParser(COLUMNS_NUMBER);
+        return parser;
+    }
+
+    @Override
+    protected int getColumnsNumber() {
+        return COLUMNS_NUMBER;
     }
 
     @Test
     public void shouldReturnTaskWithCorrectValuesWhenParseDetailedString() throws Exception {
         // When
-        Task actualTask = parser.parse(DETAILED_TASK_STRING);
+        Task actualTask = parser.parse(TASK_STRING);
         // Then
         assertEquals(EXPECTED_NAME, actualTask.getName());
         assertEquals(EXPECTED_PID, actualTask.getPid());
@@ -76,47 +78,11 @@ public class VerboseCsvLineTaskParserTest {
     }
 
     @Test(expected = ParseException.class)
-    public void shouldThrowExceptionWhenTaskStringHasWrongNumberOfValues() throws Exception {
-        // When
-        parser.parse(TASK_STRING_WITH_WRONG_NUMBER_OF_VALUES);
-    }
-
-    @Test(expected = ParseException.class)
     public void shouldThrowExceptionWhenSomeValueIsMalformed() throws Exception {
         // Given
-        String malformedString = DETAILED_TASK_STRING.replaceAll(COLON, SEMICOLON);
+        String malformedString = TASK_STRING.replaceAll(COLON, SEMICOLON);
         // When
         parser.parse(malformedString);
-    }
-
-    @Test(expected = ParseException.class)
-    public void shouldThrowExceptionWhenStringIsNull() throws Exception {
-        // When
-        parser.parse(null);
-    }
-
-    @Test(expected = ParseException.class)
-    public void shouldThrowExceptionWhenStringIsEmpty() throws Exception {
-        // When
-        parser.parse(StringUtils.EMPTY);
-    }
-
-    @Test(expected = ParseException.class)
-    public void shouldThrowExceptionWhenStringContainsSingleQuote() throws Exception {
-        // When
-        parser.parse("\"");
-    }
-
-    @Test(expected = ParseException.class)
-    public void shouldThrowExceptionWhenStringDoesNotStartWithQuote() throws Exception {
-        // When
-        parser.parse("\"some string");
-    }
-
-    @Test(expected = ParseException.class)
-    public void shouldThrowExceptionWhenStringDoesNotEndWithQuote() throws Exception {
-        // When
-        parser.parse("some string\"");
     }
 
 }

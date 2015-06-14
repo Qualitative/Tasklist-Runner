@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 
 public class Task {
 
-    private static final int DEFAULT = -1;
+    public static final int DEFAULT = -1;
 
     private String name;
     private int pid = DEFAULT;
@@ -167,7 +167,7 @@ public class Task {
                 .append(", memoryUsage=").append(memoryUsage)
                 .append(", status=").append(status)
                 .append(", userName=").append(userName)
-                .append(", cpuTime=").append(DurationFormatUtils.formatDuration(cpuTime.toMillis(), "H:mm:ss"))
+                .append(", cpuTime=").append(cpuTime == null ? "null" : DurationFormatUtils.formatDuration(cpuTime.toMillis(), "H:mm:ss"))
                 .append(", windowTitle=").append(windowTitle)
                 .append(", modules=").append(modules)
                 .append(", services=").append(services)

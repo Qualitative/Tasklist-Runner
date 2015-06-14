@@ -11,7 +11,9 @@
         <constructor-arg ref="verboseCsvLineTaskParser" />
     </bean>
 
-    <bean id="verboseCsvLineTaskParser" class="com.ns.parser.VerboseCsvLineTaskParser" />
+    <bean id="verboseCsvLineTaskParser" class="com.ns.parser.VerboseCsvLineTaskParser" >
+        <constructor-arg value="9"/>
+    </bean>
 
     <bean id="taskListProcessor" class="com.ns.processor.TaskListProcessor" >
         <constructor-arg ref="inMemoryTaskDao"/>
