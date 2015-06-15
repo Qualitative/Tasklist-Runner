@@ -3,10 +3,19 @@ package com.ns.model;
 import java.time.Duration;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import com.google.common.collect.Lists;
 
+@XmlRootElement(name = "task")
+@XmlType(propOrder = { "name", "memoryUsage" })
+@XmlAccessorType(XmlAccessType.NONE)
 public class Task {
 
     public static final int DEFAULT = -1;
@@ -23,6 +32,7 @@ public class Task {
     private List<String> modules = Lists.newArrayList();
     private List<String> services = Lists.newArrayList();
 
+    @XmlElement(name = "name", required = true, nillable = true)
     public String getName() {
         return name;
     }
@@ -55,6 +65,7 @@ public class Task {
         this.sessionNumber = sessionNumber;
     }
 
+    @XmlElement(name = "memory", required = true)
     public long getMemoryUsage() {
         return memoryUsage;
     }
@@ -111,7 +122,7 @@ public class Task {
         this.services = services;
     }
 
-    // TODO: consider usage of BeanUtils or BeanUtilsBean. Also consider moving  this logic to helper
+    // TODO: consider usage of BeanUtils or BeanUtilsBean. Also consider moving this logic to helper
     public Task merge(Task other) {
         Task task = new Task();
         task.name = other.name == null ? name : other.name;
@@ -159,19 +170,13 @@ public class Task {
 
     @Override
     public String toString() {
-        return new StringBuilder()
-                .append("Task [name=").append(name)
-                .append(", pid=").append(pid)
-                .append(", sessionName=").append(sessionName)
-                .append(", sessionNumber=").append(sessionNumber)
-                .append(", memoryUsage=").append(memoryUsage)
-                .append(", status=").append(status)
-                .append(", userName=").append(userName)
-                .append(", cpuTime=").append(cpuTime == null ? "null" : DurationFormatUtils.formatDuration(cpuTime.toMillis(), "H:mm:ss"))
-                .append(", windowTitle=").append(windowTitle)
-                .append(", modules=").append(modules)
-                .append(", services=").append(services)
-                .append("]").toString();
+        return new StringBuilder().append("Task [name=").append(name).append(", pid=").append(pid)
+                .append(", sessionName=").append(sessionName).append(", sessionNumber=").append(sessionNumber)
+                .append(", memoryUsage=").append(memoryUsage).append(", status=").append(status).append(", userName=")
+                .append(userName).append(", cpuTime=")
+                .append(cpuTime == null ? "null" : DurationFormatUtils.formatDuration(cpuTime.toMillis(), "H:mm:ss"))
+                .append(", windowTitle=").append(windowTitle).append(", modules=").append(modules)
+                .append(", services=").append(services).append("]").toString();
     }
 
 }

@@ -18,6 +18,7 @@ ext {
     junitVersion = '4.12'
     powermockVersion = '1.6.2'
     mockitoVersion = '1.10.19'
+    jaxbVersion = '2.2.11'
 }
 
 repositories { jcenter() }
@@ -26,6 +27,11 @@ dependencies {
     compile "org.springframework:spring-core:${springVersion}"
     compile "org.springframework:spring-context:${springVersion}"
     compile "org.springframework:spring-beans:${springVersion}"
+    compile "org.springframework:spring-oxm:${springVersion}"
+
+    compile "com.sun.xml.bind:jaxb-impl:${jaxbVersion}"
+    compile "com.sun.xml.bind:jaxb-core:${jaxbVersion}"
+
 
     compile "org.apache.commons:commons-lang3:${apacheCommmonsVersion}"
     compile "com.google.guava:guava:${guavaVersion}"

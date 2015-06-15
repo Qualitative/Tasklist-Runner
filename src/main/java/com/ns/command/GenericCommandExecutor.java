@@ -53,6 +53,7 @@ public class GenericCommandExecutor implements Executor {
         return result;
     }
 
+    // TODO: use InputOutputUtils for creating reader
     private String getCommandOutput(File file) throws IOException {
         LOG.debug("Collecting command's output");
         StringBuilder builder = new StringBuilder();

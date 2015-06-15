@@ -1,5 +1,6 @@
 package com.ns.model;
 
+
 public enum Status {
     RUNNING("Running"), NOT_RESPONDING("Not Responding"), UNKNOWN("Unknown");
 
