@@ -25,5 +25,4 @@ public class ServicesCsvLineTaskParser extends AbstractCsvLineTaskParser {
         return task;
     }
 
-
 }

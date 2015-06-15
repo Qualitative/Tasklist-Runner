@@ -29,18 +29,15 @@ public class InMemoryTaskDao implements TaskDao {
     }
 
     @Override
-    public void saveOrUpdateTask(Task task) {
+    public void saveTask(Task task) {
         checkNotNull(task);
         int pid = task.getPid();
-        Task savedTask = tasks.get(pid);
-        if(savedTask == null) {
-            LOG.debug("No task with pid {} was found. Saving new", pid);
-            tasks.put(pid, task);
-        } else {
-            LOG.debug("Task with pid {} is found. Merging values", pid);
-            Task mergedTask = savedTask.merge(task);
-            tasks.put(pid, mergedTask);
+        if (pid == Task.DEFAULT) {
+            LOG.error("Can't save task without PID");
+            throw new IllegalArgumentException("Can't save task withou PID");
         }
+        LOG.debug("Saving task with PID [{}]", pid);
+        tasks.put(pid, task);
     }
 
     @Override
@@ -49,9 +46,9 @@ public class InMemoryTaskDao implements TaskDao {
         int pid = task.getPid();
         Task removed = tasks.remove(pid);
         if (removed != null) {
-            LOG.debug("Task with pid [{}] has been removed", pid);
+            LOG.debug("Task with PID [{}] has been removed", pid);
         } else {
-            LOG.debug("Can't remove task. Task with pid [{}] was not found", pid);
+            LOG.debug("Can't remove task. Task with PID [{}] was not found", pid);
         }
     }
 

@@ -8,7 +8,7 @@ public interface TaskDao {
 
     List<Task> getAllTasks();
     Task getTask(int pid);
-    void saveOrUpdateTask(Task task);
+    void saveTask(Task task);
     void removeTask(Task task);
     void removeAllTasks();
 

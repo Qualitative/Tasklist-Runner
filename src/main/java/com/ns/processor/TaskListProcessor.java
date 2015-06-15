@@ -18,7 +18,7 @@ public class TaskListProcessor implements Processor<List<Task>> {
     @Override
     public void process(List<Task> tasks) {
         for (Task task : tasks) {
-            taskDao.saveOrUpdateTask(task);
+            taskDao.saveTask(task);
         }
     }
 
