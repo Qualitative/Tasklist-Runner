@@ -19,9 +19,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.google.common.collect.Lists;
 import com.ns.exception.ExecutionException;
+import com.ns.util.InputOutputUtils;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ GenericCommandExecutor.class, File.class })
+@PrepareForTest({ GenericCommandExecutor.class, File.class, InputOutputUtils.class })
 public class GenericCommandExecutorTest {
 
     private static final String FILE_NAME = "test-command-output.tmp";
@@ -31,7 +32,8 @@ public class GenericCommandExecutorTest {
             + "second string\n" + "another not important string";
 
     private static final List<String> COMMAND = Lists.newArrayList("any", "command");
-    private static final List<String> WRAPPED_COMMAND = Lists.newArrayList("cmd", "/c", "chcp","65001", "&", "any", "command");
+    private static final List<String> WRAPPED_COMMAND = Lists.newArrayList("cmd", "/c", "chcp", "65001", "&", "any",
+            "command");
 
     private File file = mock(File.class);
     private Process process = mock(Process.class);

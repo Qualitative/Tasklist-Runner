@@ -2,9 +2,7 @@ package com.ns.command;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.ns.exception.ExecutionException;
+import com.ns.util.InputOutputUtils;
 
 public class GenericCommandExecutor implements Executor {
 
@@ -27,9 +26,8 @@ public class GenericCommandExecutor implements Executor {
         File tempFile = File.createTempFile("command-output", null);
         try {
             tempFile.deleteOnExit();
-            ProcessBuilder processBuilder = new ProcessBuilder(wrappedCommand)
-                                                    .redirectErrorStream(true)
-                                                    .redirectOutput(tempFile);
+            ProcessBuilder processBuilder = new ProcessBuilder(wrappedCommand).redirectErrorStream(true)
+                    .redirectOutput(tempFile);
             Process process = processBuilder.start();
             LOG.debug("Waiting for command execution finish");
             int exitCode = process.waitFor();
@@ -48,7 +46,7 @@ public class GenericCommandExecutor implements Executor {
     }
 
     private List<String> wrapWithUTF8Console(List<String> command) {
-        List<String> result = Lists.newArrayList("cmd", "/c", "chcp","65001", "&");
+        List<String> result = Lists.newArrayList("cmd", "/c", "chcp", "65001", "&");
         result.addAll(command);
         return result;
     }
@@ -58,9 +56,7 @@ public class GenericCommandExecutor implements Executor {
         LOG.debug("Collecting command's output");
         StringBuilder builder = new StringBuilder();
 
-        try (FileInputStream fis = new FileInputStream(file);
-             InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
-             BufferedReader in = new BufferedReader(isr);) {
+        try (BufferedReader in = InputOutputUtils.createUnicodeReader(file)) {
             // Remove record with current code page
             in.readLine();
             int c;
