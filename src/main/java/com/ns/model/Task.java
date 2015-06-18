@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import com.google.common.collect.Lists;
+import com.ns.util.TaskParserUtils;
 
 @XmlRootElement(name = "task")
 @XmlType(propOrder = { "name", "memoryUsage" })
@@ -174,7 +175,7 @@ public class Task {
                 .append(", sessionName=").append(sessionName).append(", sessionNumber=").append(sessionNumber)
                 .append(", memoryUsage=").append(memoryUsage).append(", status=").append(status).append(", userName=")
                 .append(userName).append(", cpuTime=")
-                .append(cpuTime == null ? "null" : DurationFormatUtils.formatDuration(cpuTime.toMillis(), "H:mm:ss"))
+                .append(cpuTime == null ? "null" : TaskParserUtils.getDurationString(cpuTime))
                 .append(", windowTitle=").append(windowTitle).append(", modules=").append(modules)
                 .append(", services=").append(services).append("]").toString();
     }

@@ -3,6 +3,8 @@ package com.ns;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.SwingUtilities;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -13,8 +15,10 @@ import com.google.common.collect.Maps;
 import com.ns.command.OutputFormat;
 import com.ns.command.TasklistCommandBuilder;
 import com.ns.configuration.CommandConfiguration;
-import com.ns.filter.TasklistFilterBuilder;
+import com.ns.dao.TaskDao;
 import com.ns.filter.LogicOperator;
+import com.ns.filter.TasklistFilterBuilder;
+import com.ns.gui.MainWindow;
 import com.ns.model.Status;
 import com.ns.model.Task;
 
@@ -34,8 +38,17 @@ public class Application {
         statusCriteria.put(LogicOperator.EQUALS, Lists.newArrayList(Status.RUNNING));
         TasklistCommandBuilder commandBuilder = new TasklistCommandBuilder();
         List<String> filters = filterBuilder.addStatusFilter(statusCriteria, false).build();
-        List<String> command = commandBuilder.withFormat(OutputFormat.CSV).withFilters(filters).withVerbose().withNoHeaders()
-                .build();
+        List<String> command = commandBuilder.withFormat(OutputFormat.CSV).withFilters(filters).withVerbose()
+                .withNoHeaders().build();
         tasklist.run(command);
+        TaskDao taskDao = (TaskDao) applicationContext.getBean("inMemoryTaskDao");
+
+        SwingUtilities.invokeLater(() -> createAndShowGui(taskDao));
+    }
+
+    private static void createAndShowGui(TaskDao taskDao) {
+        MainWindow window = new MainWindow(taskDao);
+        window.init();
+        window.setVisible(true);
     }
 }

@@ -4,6 +4,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.time.Duration;
 
+import org.apache.commons.lang3.time.DurationFormatUtils;
+
 public class TaskParserUtils {
 
     public static long getMemoryUsage(String memoryUsageString) {
@@ -20,4 +22,7 @@ public class TaskParserUtils {
         return Duration.ZERO.plusHours(hours).plusMinutes(minutes).plusSeconds(seconds);
     }
 
+    public static String getDurationString(Duration duration) {
+        return DurationFormatUtils.formatDuration(duration.toMillis(), "H:mm:ss");
+    }
 }
