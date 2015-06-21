@@ -6,10 +6,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Map;
 
-import org.gradle.jarjar.com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
 import com.ns.model.Task;
 
 public class TaskTransformerTest {
