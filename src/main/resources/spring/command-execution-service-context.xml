@@ -11,20 +11,24 @@
         <constructor-arg ref="verboseCsvLineTaskParser" />
     </bean>
 
-    <bean id="verboseCsvLineTaskParser" class="com.ns.parser.VerboseCsvLineTaskParser" >
-        <constructor-arg value="9"/>
+    <bean id="verboseCsvLineTaskParser" class="com.ns.parser.VerboseCsvLineTaskParser">
+        <constructor-arg value="9" />
     </bean>
 
-    <bean id="taskListProcessor" class="com.ns.processor.TaskListProcessor" >
-        <constructor-arg ref="inMemoryTaskDao"/>
+    <bean id="taskListProcessor" class="com.ns.processor.TaskListProcessor">
+        <constructor-arg ref="inMemoryTaskDao" />
     </bean>
 
-    <bean id="inMemoryTaskDao" class="com.ns.dao.InMemoryTaskDao"/>
+    <bean id="inMemoryTaskDao" class="com.ns.dao.InMemoryTaskDao" />
 
     <bean id="tasklistConfiguration" class="com.ns.configuration.CommandConfiguration">
         <constructor-arg ref="genericCommandExecutor" />
         <constructor-arg ref="tasklistCsvFormatParser" />
         <constructor-arg ref="taskListProcessor" />
+    </bean>
+
+    <bean id="guiController" class="com.ns.gui.controller.GuiController">
+        <constructor-arg ref="inMemoryTaskDao" />
     </bean>
 
 </beans>

@@ -1,4 +1,4 @@
-package com.ns.gui;
+package com.ns.gui.model;
 
 import java.time.Duration;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.swing.table.AbstractTableModel;
 import com.ns.model.Task;
 import com.ns.util.TaskParserUtils;
 
-public class VerboseTasklistTableModel extends AbstractTableModel {
+public class VerboseTasklistTableModel extends AbstractTableModel implements TasklistTableModel {
 
     private static final int NAME_INDEX = 0;
     private static final int PID_INDEX = 1;
@@ -24,11 +24,8 @@ public class VerboseTasklistTableModel extends AbstractTableModel {
 
     private String[] columnNames = new String[] { "Name", "PID", "Session Name", "Session Number", "Memory Usage",
             "Status", "User Name", "Cpu Time", " Window Title", "Modules", "Services" };
-    private List<Task> data;
 
-    public VerboseTasklistTableModel(List<Task> data) {
-        this.data = data;
-    }
+    private List<Task> data;
 
     public String getColumnName(int column) {
         return columnNames[column];
@@ -91,6 +88,11 @@ public class VerboseTasklistTableModel extends AbstractTableModel {
 
     public int getColumnCount() {
         return columnNames.length;
+    }
+
+    @Override
+    public void setData(List<Task> data) {
+        this.data = data;
     }
 
 }

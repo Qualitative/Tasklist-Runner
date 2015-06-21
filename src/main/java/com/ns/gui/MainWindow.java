@@ -6,18 +6,15 @@ import java.awt.Toolkit;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
-import com.ns.dao.TaskDao;
+import com.ns.gui.controller.GuiController;
 
 public class MainWindow extends JFrame {
 
-    private TaskDao taskDao;
+    private GuiController controller;
 
-    public MainWindow() {
+    public MainWindow(GuiController controller) {
         super("Tasklist-Runner");
-    }
-
-    public MainWindow(TaskDao taskDao) {
-        this.taskDao = taskDao;
+        this.controller = controller;
     }
 
     public void init() {
@@ -33,11 +30,11 @@ public class MainWindow extends JFrame {
         MainPanel mainPanel = new MainPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
 
-        TablePanel tablePanel = new TablePanel(taskDao);
+        TablePanel tablePanel = new TablePanel(controller);
         tablePanel.init();
         mainPanel.add(tablePanel);
 
-        ControlPanel controlPanel = new ControlPanel();
+        ControlPanel controlPanel = new ControlPanel(controller);
         controlPanel.init();
         mainPanel.add(controlPanel);
 

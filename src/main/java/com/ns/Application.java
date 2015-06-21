@@ -15,10 +15,10 @@ import com.google.common.collect.Maps;
 import com.ns.command.OutputFormat;
 import com.ns.command.TasklistCommandBuilder;
 import com.ns.configuration.CommandConfiguration;
-import com.ns.dao.TaskDao;
 import com.ns.filter.LogicOperator;
 import com.ns.filter.TasklistFilterBuilder;
 import com.ns.gui.MainWindow;
+import com.ns.gui.controller.GuiController;
 import com.ns.model.Status;
 import com.ns.model.Task;
 
@@ -41,13 +41,13 @@ public class Application {
         List<String> command = commandBuilder.withFormat(OutputFormat.CSV).withFilters(filters).withVerbose()
                 .withNoHeaders().build();
         tasklist.run(command);
-        TaskDao taskDao = (TaskDao) applicationContext.getBean("inMemoryTaskDao");
+        GuiController controller = (GuiController) applicationContext.getBean("guiController");
 
-        SwingUtilities.invokeLater(() -> createAndShowGui(taskDao));
+        SwingUtilities.invokeLater(() -> createAndShowGui(controller));
     }
 
-    private static void createAndShowGui(TaskDao taskDao) {
-        MainWindow window = new MainWindow(taskDao);
+    private static void createAndShowGui(GuiController controller) {
+        MainWindow window = new MainWindow(controller);
         window.init();
         window.setVisible(true);
     }
