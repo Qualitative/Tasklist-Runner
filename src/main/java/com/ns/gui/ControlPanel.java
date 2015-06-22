@@ -30,6 +30,7 @@ public class ControlPanel extends JPanel {
     private JButton refreshButton;
     private JButton exportButton;
     private JButton importButton;
+    private JButton exportToExcelButton;
 
     private GuiController controller;
 
@@ -47,6 +48,7 @@ public class ControlPanel extends JPanel {
         this.refreshButton = new JButton("Refresh");
         this.exportButton = new JButton("Export");
         this.importButton = new JButton("Import");
+        this.exportToExcelButton = new JButton("To Excel");
     }
 
     public void init() {
@@ -75,6 +77,7 @@ public class ControlPanel extends JPanel {
         panel.add(refreshButton);
         panel.add(exportButton);
         panel.add(importButton);
+        panel.add(exportToExcelButton);
 
         add(panel);
     }
@@ -124,6 +127,15 @@ public class ControlPanel extends JPanel {
             if (returnedValue == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
                 controller.loadFrom(file);
+            }
+        });
+
+        exportToExcelButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int returnedValue = fileChooser.showSaveDialog(controller.getMainWindow());
+            if (returnedValue == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                controller.saveToExcel(file);
             }
         });
     }

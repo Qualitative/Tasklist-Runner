@@ -2,10 +2,14 @@ package com.ns.gui.controller;
 
 import java.awt.Dimension;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import com.ns.configuration.CommandConfiguration;
 import com.ns.dao.TaskDao;
+import com.ns.excel.ExcelConverter;
 import com.ns.exception.ConvertException;
 import com.ns.gui.DisplayMode;
 import com.ns.gui.MainWindow;
@@ -24,13 +28,15 @@ public class GuiController {
     private TablePanel tablePanel;
     private Dimension mainWindowSize;
     private XmlConverter<Task> xmlConverter;
+    private ExcelConverter excelConverter;
     private MainWindow mainWindow;
 
     public GuiController(TaskDao taskDao, TaskTransformer transformer, XmlConverter<Task> xmlConverter,
-            List<CommandConfiguration<List<Task>>> configurations) {
+            ExcelConverter excelConverter, List<CommandConfiguration<List<Task>>> configurations) {
         this.taskDao = taskDao;
         this.transformer = transformer;
         this.xmlConverter = xmlConverter;
+        this.excelConverter = excelConverter;
         this.configurations = configurations;
     }
 
@@ -98,5 +104,15 @@ public class GuiController {
 
     public MainWindow getMainWindow() {
         return mainWindow;
+    }
+
+    public void saveToExcel(File file) {
+        List<Task> tasks = taskDao.getAllTasks();
+        try {
+            excelConverter.generateExcelChart(tasks, file);
+        } catch (InvalidFormatException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

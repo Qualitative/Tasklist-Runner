@@ -96,6 +96,7 @@
         <constructor-arg ref="inMemoryTaskDao" />
         <constructor-arg ref="taskTransformer" />
         <constructor-arg ref="xmlConverter" />
+        <constructor-arg ref="excelConverter" />
         <constructor-arg>
             <list>
                 <ref bean="tasklistConfiguration" />
@@ -106,5 +107,9 @@
     </bean>
 
     <bean id="taskTransformer" class="com.ns.transfrormer.TaskTransformer" />
+
+    <bean id="excelConverter" class="com.ns.excel.ExcelConverter">
+        <constructor-arg value="classpath:/templates/ChartTemplate.xlsx" />
+    </bean>
 
 </beans>
