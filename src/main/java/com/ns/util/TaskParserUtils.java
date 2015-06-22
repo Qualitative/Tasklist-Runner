@@ -23,6 +23,9 @@ public class TaskParserUtils {
     }
 
     public static String getDurationString(Duration duration) {
-        return DurationFormatUtils.formatDuration(duration.toMillis(), "H:mm:ss");
+        if (duration != null) {
+            return DurationFormatUtils.formatDuration(duration.toMillis(), "H:mm:ss");
+        } else
+            return "0:00:00";
     }
 }

@@ -1,5 +1,6 @@
 package com.ns.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.List;
@@ -16,7 +17,7 @@ import com.ns.model.Task;
 
 public class MainPanel extends JPanel {
 
-    public MainPanel() {
-
+    public void init() {
+        setLayout(new BorderLayout());
     }
 }

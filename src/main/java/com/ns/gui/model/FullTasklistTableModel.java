@@ -8,7 +8,7 @@ import javax.swing.table.AbstractTableModel;
 import com.ns.model.Task;
 import com.ns.util.TaskParserUtils;
 
-public class VerboseTasklistTableModel extends AbstractTableModel implements TasklistTableModel {
+public class FullTasklistTableModel extends AbstractTableModel implements TasklistTableModel {
 
     private static final int NAME_INDEX = 0;
     private static final int PID_INDEX = 1;
@@ -19,9 +19,11 @@ public class VerboseTasklistTableModel extends AbstractTableModel implements Tas
     private static final int USER_NAME_INDEX = 6;
     private static final int CPU_TIME_INDEX = 7;
     private static final int WINDOW_TITLE_INDEX = 8;
+    private static final int MODULES_INDEX = 9;
+    private static final int SERVICES_INDEX = 10;
 
     private String[] columnNames = new String[] { "Name", "PID", "Session Name", "Session Number", "Memory Usage",
-            "Status", "User Name", "Cpu Time", " Window Title" };
+            "Status", "User Name", "Cpu Time", " Window Title", "Modules", "Services" };
 
     private List<Task> data;
 
@@ -36,6 +38,8 @@ public class VerboseTasklistTableModel extends AbstractTableModel implements Tas
         case STATUS_INDEX:
         case USER_NAME_INDEX:
         case WINDOW_TITLE_INDEX:
+        case MODULES_INDEX:
+        case SERVICES_INDEX:
             return String.class;
         case PID_INDEX:
         case SESSION_NUMBER_INDEX:
@@ -69,6 +73,10 @@ public class VerboseTasklistTableModel extends AbstractTableModel implements Tas
             return TaskParserUtils.getDurationString(record.getCpuTime());
         case WINDOW_TITLE_INDEX:
             return record.getWindowTitle();
+        case MODULES_INDEX:
+            return record.getModules();
+        case SERVICES_INDEX:
+            return record.getServices();
         default:
             return new Object();
         }

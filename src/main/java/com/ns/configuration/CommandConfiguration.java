@@ -13,14 +13,16 @@ public class CommandConfiguration<T> {
     private Executor executor;
     private Parser<T> parser;
     private Processor<T> processor;
+    private List<String> command;
 
-    public CommandConfiguration(Executor executor, Parser<T> parser, Processor<T> processor) {
+    public CommandConfiguration(Executor executor, Parser<T> parser, Processor<T> processor, List<String> command) {
         this.executor = checkNotNull(executor);
         this.parser = checkNotNull(parser);
         this.processor = checkNotNull(processor);
+        this.command = checkNotNull(command);
     }
 
-    public void run(List<String> command) {
+    public void run() {
         // TODO: provide correct exception handling
         try {
             String commandOutput = executor.execute(command);

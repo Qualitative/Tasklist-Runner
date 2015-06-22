@@ -10,9 +10,11 @@ public class StandardTasklistTableModel extends AbstractTableModel implements Ta
 
     private static final int NAME_INDEX = 0;
     private static final int PID_INDEX = 1;
-    private static final int MEMORY_USAGE_INDEX = 2;
+    private static final int SESSION_NAME_INDEX = 2;
+    private static final int SESSION_NUMBER_INDEX = 3;
+    private static final int MEMORY_USAGE_INDEX = 4;
 
-    private String[] columnNames = new String[] { "Name", "PID", "Memory Usage" };
+    private String[] columnNames = new String[] { "Name", "PID", "Session Name", "Session Number", "Memory Usage" };
 
     private List<Task> data;
 
@@ -23,8 +25,10 @@ public class StandardTasklistTableModel extends AbstractTableModel implements Ta
     public Class<?> getColumnClass(int column) {
         switch (column) {
         case NAME_INDEX:
+        case SESSION_NAME_INDEX:
             return String.class;
         case PID_INDEX:
+        case SESSION_NUMBER_INDEX:
         case MEMORY_USAGE_INDEX:
             return Long.class;
         default:
@@ -39,6 +43,10 @@ public class StandardTasklistTableModel extends AbstractTableModel implements Ta
             return record.getName();
         case PID_INDEX:
             return record.getPid();
+        case SESSION_NAME_INDEX:
+            return record.getSessionName();
+        case SESSION_NUMBER_INDEX:
+            return record.getSessionNumber();
         case MEMORY_USAGE_INDEX:
             return record.getMemoryUsage();
         default:

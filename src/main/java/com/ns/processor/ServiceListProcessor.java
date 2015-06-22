@@ -10,13 +10,13 @@ import org.slf4j.LoggerFactory;
 import com.ns.dao.TaskDao;
 import com.ns.model.Task;
 
-public class TaskListProcessor implements Processor<List<Task>> {
+public class ServiceListProcessor implements Processor<List<Task>> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TaskListProcessor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ServiceListProcessor.class);
 
     private TaskDao taskDao;
 
-    public TaskListProcessor(TaskDao taskDao) {
+    public ServiceListProcessor(TaskDao taskDao) {
         this.taskDao = checkNotNull(taskDao);
     }
 
@@ -25,7 +25,13 @@ public class TaskListProcessor implements Processor<List<Task>> {
         LOG.debug("Start tasks processing");
 
         for (Task task : tasks) {
-            taskDao.saveTask(task);
+            int pid = task.getPid();
+            Task savedTask = taskDao.getTask(pid);
+            if (savedTask != null) {
+                List<String> services = task.getServices();
+                savedTask.setServices(services);
+                taskDao.saveTask(savedTask);
+            }
         }
 
         LOG.debug("Finished tasks processing");
