@@ -109,7 +109,7 @@
     <bean id="taskTransformer" class="com.ns.transfrormer.TaskTransformer" />
 
     <bean id="excelConverter" class="com.ns.excel.ExcelConverter">
-        <constructor-arg value="classpath:/templates/ChartTemplate.xlsx" />
+        <constructor-arg value="file:/templates/ChartTemplate.xlsx" />
     </bean>
 
 </beans>

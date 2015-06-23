@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.core.io.Resource;
 
 import com.ns.model.Task;
 
@@ -21,8 +22,8 @@ public class ExcelConverter {
 
     private File chartTemplate;
 
-    public ExcelConverter(File chartTemplate) {
-        this.chartTemplate = chartTemplate;
+    public ExcelConverter(Resource chartTemplate) throws IOException {
+        this.chartTemplate = chartTemplate.getFile();
     }
 
     public void generateExcelChart(List<Task> tasks, File file) throws IOException, InvalidFormatException {

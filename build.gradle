@@ -7,7 +7,7 @@ project.sourceCompatibility = 1.8
 project.targetCompatibility = 1.8
 project.mainClassName = 'com.ns.Application'
 project.group = 'com.ns'
-project.version = '0.0.1 - SNAPSHOT'
+project.version = '0.0.1-SNAPSHOT'
 
 ext {
     springVersion = '4.1.6.RELEASE'
