@@ -1,6 +1,7 @@
 package com.ns.gui;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.util.List;
 import java.util.Map;
 
@@ -20,10 +21,12 @@ import com.ns.gui.model.VerboseTasklistTableModel;
 import com.ns.model.Task;
 import com.ns.util.TableUtils;
 
-public class TablePanel extends JPanel {
+public class TasklistTablePanel extends JPanel {
 
     private GuiController controller;
-    private JTable table;
+
+    private JTable table = new JTable();
+
     private Map<DisplayMode, TasklistTableModel> modeToModelMap = ImmutableMap
             .<DisplayMode, TasklistTableModel> builder().put(DisplayMode.STANDARD, new StandardTasklistTableModel())
             .put(DisplayMode.VERBOSE, new VerboseTasklistTableModel())
@@ -32,20 +35,15 @@ public class TablePanel extends JPanel {
             .put(DisplayMode.FULL, new FullTasklistTableModel())
             .put(DisplayMode.GROUP_BY_NAME, new GroupByNameTasklistTableModel()).build();
 
-    public TablePanel(GuiController controller) {
+    public TasklistTablePanel(GuiController controller) {
         this.controller = controller;
-        this.table = new JTable();
     }
 
     public void init() {
+        setLayout(new GridLayout(1, 1));
         controller.setTablePanel(this);
-        Dimension mainWindowSize = controller.getMainWindowSize();
-        int width = (int) (mainWindowSize.width * 0.8);
-        int height = (int) (mainWindowSize.height * 0.8);
-        Dimension size = new Dimension(width, height);
 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        table.setPreferredScrollableViewportSize(size);
         table.setFillsViewportHeight(true);
 
         TableUtils.adjustSizes(table);
@@ -56,6 +54,7 @@ public class TablePanel extends JPanel {
 
     public void updateData(DisplayMode mode, List<Task> data) {
         TasklistTableModel model = modeToModelMap.get(mode);
+
         if (model == null) {
             throw new IllegalStateException("There is no table model for display mode: " + mode);
         }

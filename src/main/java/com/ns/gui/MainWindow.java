@@ -2,12 +2,19 @@ package com.ns.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 
-import javax.swing.BoxLayout;
+import javax.swing.Box;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import com.ns.gui.controller.GuiController;
+import com.ns.util.BoxLayoutUtils;
+import com.ns.util.GuiTools;
 
 public class MainWindow extends JFrame {
 
@@ -28,14 +35,39 @@ public class MainWindow extends JFrame {
         setPreferredSize(size);
         setLocationRelativeTo(null);
 
-        controller.setMainWindowSize(size);
         controller.setMainWindow(this);
 
-        MainPanel mainPanel = new MainPanel();
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
 
-        TablePanel tablePanel = new TablePanel(controller);
+        TasklistTablePanel tablePanel = new TasklistTablePanel(controller);
         tablePanel.init();
-        mainPanel.add(tablePanel, BorderLayout.CENTER);
+
+        FiltersTablePanel filterPanel = new FiltersTablePanel(controller);
+        filterPanel.init();
+
+        JPanel tablesPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = .7;
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridheight = 7;
+        c.gridwidth = 1;
+        tablesPanel.add(tablePanel, c);
+
+        c.weighty = .3;
+        c.gridx = 0;
+        c.gridy = 7;
+        c.gridheight = 1;
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        tablesPanel.add(filterPanel, c);
+
+
+//        GuiTools.addComponentsTo(tablesPanel, tablePanel, filterPanel);
+        mainPanel.add(tablesPanel, BorderLayout.CENTER);
 
         ControlPanel controlPanel = new ControlPanel(controller);
         controlPanel.init();

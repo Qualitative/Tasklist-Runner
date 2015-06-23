@@ -13,7 +13,7 @@ import com.ns.excel.ExcelConverter;
 import com.ns.exception.ConvertException;
 import com.ns.gui.DisplayMode;
 import com.ns.gui.MainWindow;
-import com.ns.gui.TablePanel;
+import com.ns.gui.TasklistTablePanel;
 import com.ns.model.Task;
 import com.ns.oxm.XmlConverter;
 import com.ns.transfrormer.TaskTransformer;
@@ -25,8 +25,7 @@ public class GuiController {
     private List<CommandConfiguration<List<Task>>> configurations;
 
     private DisplayMode displayMode;
-    private TablePanel tablePanel;
-    private Dimension mainWindowSize;
+    private TasklistTablePanel tablePanel;
     private XmlConverter<Task> xmlConverter;
     private ExcelConverter excelConverter;
     private MainWindow mainWindow;
@@ -65,16 +64,8 @@ public class GuiController {
         setDisplayMode(displayMode);
     }
 
-    public void setTablePanel(TablePanel tablePanel) {
+    public void setTablePanel(TasklistTablePanel tablePanel) {
         this.tablePanel = tablePanel;
-    }
-
-    public void setMainWindowSize(Dimension size) {
-        this.mainWindowSize = size;
-    }
-
-    public Dimension getMainWindowSize() {
-        return mainWindowSize;
     }
 
     public void saveTo(File file) {
