@@ -48,14 +48,17 @@ public class TasklistTablePanel extends JPanel {
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         table.setFillsViewportHeight(true);
 
+        TableUtils.adjustSizes(table);
+
         TableCellRenderer renderer = new TableCellRenderer();
+        NumberTableCellRenderer numberRenderer = new NumberTableCellRenderer();
 
         table.setDefaultRenderer(Object.class, renderer);
         table.setDefaultRenderer(String.class, renderer);
-        table.setDefaultRenderer(Long.class, renderer);
+        table.setDefaultRenderer(Long.class, numberRenderer);
+        table.setDefaultRenderer(Integer.class, numberRenderer);
+        table.setDefaultRenderer(Double.class, numberRenderer);
         table.setDefaultRenderer(Duration.class, renderer);
-
-        TableUtils.adjustSizes(table);
 
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane);
