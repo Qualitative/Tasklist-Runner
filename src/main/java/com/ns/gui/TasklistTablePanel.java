@@ -1,12 +1,16 @@
 package com.ns.gui;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridLayout;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import com.google.common.collect.ImmutableMap;
 import com.ns.gui.controller.GuiController;
@@ -46,6 +50,13 @@ public class TasklistTablePanel extends JPanel {
 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         table.setFillsViewportHeight(true);
+
+        TableCellRenderer renderer = new TableCellRenderer();
+
+        table.setDefaultRenderer(Object.class, renderer);
+        table.setDefaultRenderer(String.class, renderer);
+        table.setDefaultRenderer(Long.class, renderer);
+        table.setDefaultRenderer(Duration.class, renderer);
 
         TableUtils.adjustSizes(table);
 
