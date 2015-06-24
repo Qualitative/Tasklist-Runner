@@ -4,10 +4,13 @@ import static javax.swing.Box.createHorizontalGlue;
 import static javax.swing.Box.createHorizontalStrut;
 import static javax.swing.Box.createVerticalStrut;
 
+import java.awt.Image;
 import java.awt.event.ItemEvent;
 import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -70,16 +73,25 @@ public class ControlPanel extends JPanel {
         this.fullRadioButton = createRadioButton("Full", DisplayMode.FULL);
         this.groupByNameRadioButton = createRadioButton("Group by Name", DisplayMode.GROUP_BY_NAME);
 
-        this.refreshButton = new JButton("Refresh");
-        this.cancelButton = new JButton("Cancel");
-        this.exportToXmlButton = new JButton("To XML ...");
-        this.importFromXmlButton = new JButton("From XML ...");
-        this.exportToExcelButton = new JButton("To Excel ...");
+        this.refreshButton = new JButton("Refresh", loadImage("/images/refresh_16.png"));
+        this.cancelButton = new JButton("Cancel", loadImage("/images/cancel_16.png"));
+        this.exportToXmlButton = new JButton("To XML ...", loadImage("/images/to_xml_16.png"));
+        this.importFromXmlButton = new JButton("From XML ...", loadImage("/images/from_xml_16.png"));
+        this.exportToExcelButton = new JButton("To Excel ...", loadImage("/images/to_excel_16.png"));
 
         this.fileChooser = new JFileChooser();
         this.xmlFilter = new FileTypeFilter(".xml", "eXtensible Markup Language Documents");
         this.xlsxFilter = new FileTypeFilter(".xlsx", "Microsoft Excel Documents");
 
+    }
+
+    private ImageIcon loadImage(String location) {
+        try {
+            Image image = ImageIO.read(getClass().getResource(location));
+            return new ImageIcon(image);
+        } catch (Exception e) {
+            return new ImageIcon();
+        }
     }
 
     public void init() {

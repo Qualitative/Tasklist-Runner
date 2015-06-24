@@ -5,9 +5,12 @@ import static javax.swing.Box.createHorizontalStrut;
 import static javax.swing.Box.createVerticalStrut;
 
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultCellEditor;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -39,11 +42,20 @@ public class FiltersTablePanel extends JPanel {
     public FiltersTablePanel(GuiController controller) {
         this.controller = controller;
 
-        addFilterButton = new JButton("Add filter");
-        removeFilterButton = new JButton("Remove filter");
+        addFilterButton = new JButton("Add filter", loadImage("/images/add_filter_16.png"));
+        removeFilterButton = new JButton("Remove filter", loadImage("/images/remove_filter_16.png"));
 
         filterTable = new JTable();
         tableModel = new FilterTableModel();
+    }
+
+    private ImageIcon loadImage(String location) {
+        try {
+            Image image = ImageIO.read(getClass().getResource(location));
+            return new ImageIcon(image);
+        } catch (Exception e) {
+            return new ImageIcon();
+        }
     }
 
     public void init() {
