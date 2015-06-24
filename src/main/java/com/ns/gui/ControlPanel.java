@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -33,8 +34,9 @@ public class ControlPanel extends JPanel {
     private JRadioButton groupByNameRadioButton;
 
     private JButton refreshButton;
-    private JButton exportButton;
-    private JButton importButton;
+    private JButton cancelButton;
+    private JButton exportToXmlButton;
+    private JButton importFromXmlButton;
     private JButton exportToExcelButton;
 
     private GuiController controller;
@@ -44,7 +46,11 @@ public class ControlPanel extends JPanel {
     private JCheckBox usePassword;
     private JTextField remoteSystemField;
     private JTextField userNameField;
-    private JTextField passwordField;
+    private JPasswordField passwordField;
+
+    private JFileChooser fileChooser;
+    private FileTypeFilter xmlFilter;
+    private FileTypeFilter xlsxFilter;
 
     public ControlPanel(GuiController controller) {
         this.controller = controller;
@@ -54,7 +60,7 @@ public class ControlPanel extends JPanel {
         this.usePassword = new JCheckBox("User password:", false);
         this.remoteSystemField = new JTextField(20);
         this.userNameField = new JTextField(20);
-        this.passwordField = new JTextField(20);
+        this.passwordField = new JPasswordField(20);
 
         this.buttonGroup = new ButtonGroup();
         this.standardRadioButton = createRadioButton("Standard", DisplayMode.STANDARD);
@@ -65,12 +71,19 @@ public class ControlPanel extends JPanel {
         this.groupByNameRadioButton = createRadioButton("Group by Name", DisplayMode.GROUP_BY_NAME);
 
         this.refreshButton = new JButton("Refresh");
-        this.exportButton = new JButton("Export");
-        this.importButton = new JButton("Import");
-        this.exportToExcelButton = new JButton("To Excel");
+        this.cancelButton = new JButton("Cancel");
+        this.exportToXmlButton = new JButton("To XML ...");
+        this.importFromXmlButton = new JButton("From XML ...");
+        this.exportToExcelButton = new JButton("To Excel ...");
+
+        this.fileChooser = new JFileChooser();
+        this.xmlFilter = new FileTypeFilter(".xml", "eXtensible Markup Language Documents");
+        this.xlsxFilter = new FileTypeFilter(".xlsx", "Microsoft Excel Documents");
+
     }
 
     public void init() {
+        controller.setControlPanel(this);
         controller.setDisplayMode(DisplayMode.STANDARD);
 
         standardRadioButton.setSelected(true);
@@ -114,28 +127,37 @@ public class ControlPanel extends JPanel {
 
         JPanel displayModePanelH = BoxLayoutUtils.createHorizontalPanel();
         JPanel displayModePanelV = BoxLayoutUtils.createVerticalPanel();
-        GuiTools.createRecommendedMargin(refreshButton);
+
+        GuiTools.createRecommendedMargin(refreshButton, cancelButton);
+        GuiTools.makeSameSize(refreshButton, cancelButton);
         GuiTools.makeSameSize(standardRadioButton, verboseRadioButton, servicesRadioButton, modulesRadioButton,
-                fullRadioButton, groupByNameRadioButton, refreshButton);
+                fullRadioButton, groupByNameRadioButton);
         GuiTools.addComponentsTo(displayModePanelV, standardRadioButton, verboseRadioButton, servicesRadioButton,
-                modulesRadioButton, fullRadioButton, groupByNameRadioButton, refreshButton);
+                modulesRadioButton, fullRadioButton, groupByNameRadioButton);
+
+        JPanel controlButtonPanel = BoxLayoutUtils.createHorizontalPanel();
+        GuiTools.addComponentsTo(controlButtonPanel, refreshButton, createHorizontalStrut(5), cancelButton,
+                createHorizontalGlue());
 
         JPanel xmlButtonPanel = BoxLayoutUtils.createHorizontalPanel();
-        GuiTools.createRecommendedMargin(exportButton, importButton);
-        GuiTools.makeSameSize(exportButton, importButton);
-        GuiTools.addComponentsTo(xmlButtonPanel, exportButton, createHorizontalStrut(5), importButton,
+        GuiTools.createRecommendedMargin(exportToXmlButton, importFromXmlButton, exportToExcelButton);
+        GuiTools.makeSameSize(exportToXmlButton, importFromXmlButton, exportToExcelButton);
+        GuiTools.addComponentsTo(xmlButtonPanel, exportToXmlButton, createHorizontalStrut(5), importFromXmlButton,
                 createHorizontalGlue());
 
         JPanel excelButtonPanel = BoxLayoutUtils.createHorizontalPanel();
-        GuiTools.createRecommendedMargin(exportToExcelButton);
         GuiTools.addComponentsTo(excelButtonPanel, exportToExcelButton, createHorizontalGlue());
 
         GuiTools.addComponentsTo(displayModePanelH, displayModePanelV, createHorizontalGlue());
 
-        GuiTools.addComponentsTo(contentPanel, remotePanelH, displayModePanelH, createVerticalStrut(20),
-                xmlButtonPanel, createVerticalStrut(10), excelButtonPanel);
+        GuiTools.addComponentsTo(contentPanel, remotePanelH, displayModePanelH, createHorizontalStrut(5),
+                controlButtonPanel, createVerticalStrut(20), xmlButtonPanel, createVerticalStrut(10), excelButtonPanel);
 
         add(contentPanel);
+    }
+
+    public void clearSelection() {
+        buttonGroup.clearSelection();
     }
 
     private JRadioButton createRadioButton(String caption, DisplayMode mode) {
@@ -157,11 +179,9 @@ public class ControlPanel extends JPanel {
                 useUserName.setSelected(false);
                 useUserName.setEnabled(false);
                 userNameField.setEnabled(false);
-                userNameField.setText("");
                 usePassword.setSelected(false);
                 usePassword.setEnabled(false);
                 passwordField.setEnabled(false);
-                passwordField.setText("");
             }
         });
 
@@ -170,12 +190,10 @@ public class ControlPanel extends JPanel {
                 userNameField.setEnabled(true);
                 usePassword.setEnabled(true);
             } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                userNameField.setText("");
                 userNameField.setEnabled(false);
                 usePassword.setSelected(false);
                 usePassword.setEnabled(false);
                 passwordField.setEnabled(false);
-                passwordField.setText("");
             }
         });
 
@@ -184,7 +202,6 @@ public class ControlPanel extends JPanel {
                 passwordField.setEnabled(true);
             } else if (e.getStateChange() == ItemEvent.DESELECTED) {
                 passwordField.setEnabled(false);
-                passwordField.setText("");
             }
         });
 
@@ -192,32 +209,54 @@ public class ControlPanel extends JPanel {
             controller.runCommand();
         });
 
-        exportButton.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
+        cancelButton.addActionListener(e -> {
+            controller.cancelCommand();
+        });
+
+        exportToXmlButton.addActionListener(e -> {
+            fileChooser.addChoosableFileFilter(xmlFilter);
+            fileChooser.setFileFilter(xmlFilter);
             int returnedValue = fileChooser.showSaveDialog(controller.getMainWindow());
             if (returnedValue == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
-                controller.saveTo(file);
+                File updatedFile = addExtensionIfAbsent(file, xmlFilter.getExtension());
+                controller.saveToXml(updatedFile);
             }
+            fileChooser.removeChoosableFileFilter(xmlFilter);
         });
 
-        importButton.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
+        importFromXmlButton.addActionListener(e -> {
+            fileChooser.addChoosableFileFilter(xmlFilter);
+            fileChooser.setFileFilter(xmlFilter);
             int returnedValue = fileChooser.showOpenDialog(controller.getMainWindow());
             if (returnedValue == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
-                controller.loadFrom(file);
+                controller.loadFromXml(file);
             }
+            fileChooser.removeChoosableFileFilter(xmlFilter);
         });
 
         exportToExcelButton.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.addChoosableFileFilter(xlsxFilter);
+            fileChooser.setFileFilter(xlsxFilter);
             int returnedValue = fileChooser.showSaveDialog(controller.getMainWindow());
             if (returnedValue == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
-                controller.saveToExcel(file);
+                File updatedFile = addExtensionIfAbsent(file, xlsxFilter.getExtension());
+                controller.saveToExcel(updatedFile);
             }
+            fileChooser.removeChoosableFileFilter(xlsxFilter);
         });
+    }
+
+    private File addExtensionIfAbsent(File file, String extension) {
+        String path = file.getAbsolutePath().toLowerCase();
+        if (!path.endsWith(extension.toLowerCase())) {
+            return new File(path + extension);
+        } else {
+            return file;
+        }
+
     }
 
     private void checkOption(ItemEvent event, DisplayMode mode) {
@@ -225,4 +264,39 @@ public class ControlPanel extends JPanel {
             controller.setDisplayMode(mode);
         }
     }
+
+    public String getRemoteSystem() {
+        if (useRemoteSystem.isSelected()) {
+            return remoteSystemField.getText();
+        } else {
+            return null;
+        }
+    }
+
+    public String getUserName() {
+        if (useUserName.isSelected()) {
+            return userNameField.getText();
+        } else {
+            return null;
+        }
+    }
+
+    public String getUserPassword() {
+        if (usePassword.isSelected()) {
+            return new String(passwordField.getPassword());
+        } else {
+            return null;
+        }
+    }
+
+    public void started() {
+        cancelButton.setEnabled(true);
+        refreshButton.setEnabled(false);
+    }
+
+    public void finished() {
+        cancelButton.setEnabled(false);
+        refreshButton.setEnabled(true);
+    }
+
 }

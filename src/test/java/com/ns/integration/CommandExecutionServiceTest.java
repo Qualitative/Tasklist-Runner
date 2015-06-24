@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
+import com.google.common.collect.Lists;
 import com.ns.configuration.CommandConfiguration;
 import com.ns.model.Task;
 
@@ -20,6 +21,6 @@ public class CommandExecutionServiceTest extends AbstractJUnit4SpringContextTest
 
     @Test
     public void testContext() {
-        configuration.run();
+        configuration.run(Lists.newArrayList("tasklist", "/v", "/fo", "csv"));
     }
 }

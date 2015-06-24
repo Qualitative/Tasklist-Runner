@@ -11,6 +11,21 @@
 
     <bean id="genericCommandExecutor" class="com.ns.command.GenericCommandExecutor" />
 
+    <bean id="remoteTasklistCsvFormatParser" class="com.ns.parser.TasklistCsvFormatParser">
+        <constructor-arg ref="remoteVerboseCsvLineTaskParser" />
+    </bean>
+
+    <bean id="remoteVerboseCsvLineTaskParser" class="com.ns.parser.RemoteVerboseCsvLineTaskParser">
+        <constructor-arg value="7" />
+    </bean>
+
+    <bean id="remoteTasklistConfiguration" class="com.ns.configuration.CommandConfiguration">
+        <constructor-arg ref="genericCommandExecutor" />
+        <constructor-arg ref="remoteTasklistCsvFormatParser" />
+        <constructor-arg ref="taskListProcessor" />
+    </bean>
+
+
     <bean id="tasklistCsvFormatParser" class="com.ns.parser.TasklistCsvFormatParser">
         <constructor-arg ref="verboseCsvLineTaskParser" />
     </bean>
@@ -27,15 +42,6 @@
         <constructor-arg ref="genericCommandExecutor" />
         <constructor-arg ref="tasklistCsvFormatParser" />
         <constructor-arg ref="taskListProcessor" />
-        <constructor-arg>
-            <list>
-                <value>tasklist</value>
-                <value>/v</value>
-                <value>/fo</value>
-                <value>csv</value>
-                <value>/nh</value>
-            </list>
-        </constructor-arg>
     </bean>
 
     <bean id="serviceCsvFormatParser" class="com.ns.parser.TasklistCsvFormatParser">
@@ -54,15 +60,6 @@
         <constructor-arg ref="genericCommandExecutor" />
         <constructor-arg ref="serviceCsvFormatParser" />
         <constructor-arg ref="serviceListProcessor" />
-        <constructor-arg>
-            <list>
-                <value>tasklist</value>
-                <value>/svc</value>
-                <value>/fo</value>
-                <value>csv</value>
-                <value>/nh</value>
-            </list>
-        </constructor-arg>
     </bean>
 
     <bean id="moduleCsvFormatParser" class="com.ns.parser.TasklistCsvFormatParser">
@@ -81,6 +78,44 @@
         <constructor-arg ref="genericCommandExecutor" />
         <constructor-arg ref="moduleCsvFormatParser" />
         <constructor-arg ref="moduleListProcessor" />
+    </bean>
+
+    <bean id="guiController" class="com.ns.gui.controller.GuiController">
+        <constructor-arg ref="inMemoryTaskDao" />
+        <constructor-arg ref="taskTransformer" />
+        <constructor-arg ref="xmlConverter" />
+        <constructor-arg ref="excelConverter" />
+        <constructor-arg ref="remoteTasklistConfiguration" />
+        <constructor-arg ref="tasklistConfiguration" />
+        <constructor-arg ref="serviceConfiguration" />
+        <constructor-arg ref="moduleConfiguration" />
+        <constructor-arg>
+            <list>
+                <value>tasklist</value>
+                <value>/v</value>
+                <value>/fo</value>
+                <value>csv</value>
+                <value>/nh</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg>
+            <list>
+                <value>tasklist</value>
+                <value>/v</value>
+                <value>/fo</value>
+                <value>csv</value>
+                <value>/nh</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg>
+            <list>
+                <value>tasklist</value>
+                <value>/svc</value>
+                <value>/fo</value>
+                <value>csv</value>
+                <value>/nh</value>
+            </list>
+        </constructor-arg>
         <constructor-arg>
             <list>
                 <value>tasklist</value>
@@ -92,24 +127,10 @@
         </constructor-arg>
     </bean>
 
-    <bean id="guiController" class="com.ns.gui.controller.GuiController">
-        <constructor-arg ref="inMemoryTaskDao" />
-        <constructor-arg ref="taskTransformer" />
-        <constructor-arg ref="xmlConverter" />
-        <constructor-arg ref="excelConverter" />
-        <constructor-arg>
-            <list>
-                <ref bean="tasklistConfiguration" />
-                <ref bean="serviceConfiguration" />
-                <ref bean="moduleConfiguration" />
-            </list>
-        </constructor-arg>
-    </bean>
-
     <bean id="taskTransformer" class="com.ns.transfrormer.TaskTransformer" />
 
     <bean id="excelConverter" class="com.ns.excel.ExcelConverter">
-        <constructor-arg value="file:/templates/ChartTemplate.xlsx" />
+        <constructor-arg value="classpath:/templates/ChartTemplate.xlsx" />
     </bean>
 
 </beans>

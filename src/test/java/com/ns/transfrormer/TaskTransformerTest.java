@@ -1,10 +1,8 @@
 package com.ns.transfrormer;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,10 +46,14 @@ public class TaskTransformerTest {
         List<Task> result = transformer.aggregateMemoryUsageByTaskName(tasks);
         // Then
         assertEquals(2, result.size());
-//        assertTrue(result.containsKey(NAME));
-//        assertTrue(result.containsKey(OTHER_NAME));
-//        assertEquals(AGGREGATED_MEMORY_USAGE, (long) result.get(NAME));
-//        assertEquals(OTHER_MEMORY_USAGE, (long) result.get(OTHER_NAME));
+
+        Task firstTask = result.get(0);
+        assertEquals(NAME, firstTask.getName());
+        assertEquals(AGGREGATED_MEMORY_USAGE, (long) firstTask.getMemoryUsage());
+
+        Task secondTask = result.get(1);
+        assertEquals(OTHER_NAME, secondTask.getName());
+        assertEquals(OTHER_MEMORY_USAGE, (long) secondTask.getMemoryUsage());
     }
 
     private Task createTask(String name, long memoryUsage) {

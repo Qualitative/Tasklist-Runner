@@ -9,8 +9,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.apache.commons.lang3.time.DurationFormatUtils;
-
 import com.google.common.collect.Lists;
 import com.ns.util.TaskParserUtils;
 
@@ -121,24 +119,6 @@ public class Task {
 
     public void setServices(List<String> services) {
         this.services = services;
-    }
-
-    // TODO: consider usage of BeanUtils or BeanUtilsBean. Also consider moving this logic to helper
-    public Task merge(Task other) {
-        Task task = new Task();
-        task.name = other.name == null ? name : other.name;
-        task.pid = other.pid == DEFAULT ? pid : other.pid;
-        task.sessionName = other.sessionName == null ? sessionName : other.sessionName;
-        task.sessionNumber = other.sessionNumber == DEFAULT ? sessionNumber : other.sessionNumber;
-        task.memoryUsage = other.memoryUsage == DEFAULT ? memoryUsage : other.memoryUsage;
-        task.status = other.status == null ? status : other.status;
-        task.userName = other.userName == null ? userName : other.userName;
-        task.cpuTime = other.cpuTime == null ? cpuTime : other.cpuTime;
-        task.windowTitle = other.windowTitle == null ? windowTitle : other.windowTitle;
-        task.cpuTime = other.cpuTime == null ? cpuTime : other.cpuTime;
-        task.modules = other.modules.isEmpty() ? modules : other.modules;
-        task.services = other.services.isEmpty() ? services : other.services;
-        return task;
     }
 
     @Override

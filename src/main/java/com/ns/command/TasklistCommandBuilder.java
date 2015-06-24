@@ -16,6 +16,10 @@ public class TasklistCommandBuilder {
     private boolean noHeaders = false;
     private OutputFormat format = OutputFormat.TABLE;
 
+    public void setCommands(List<String> commands) {
+        this.commands = commands;
+    }
+
     public TasklistCommandBuilder withRemoteSystem(String remotSystem) {
         commands.add("/S");
         commands.add(remotSystem);
@@ -29,6 +33,7 @@ public class TasklistCommandBuilder {
         }
         commands.add("/U");
         commands.add(user);
+        withUser = true;
         return this;
     }
 
@@ -103,6 +108,12 @@ public class TasklistCommandBuilder {
 
     public void clear() {
         commands.clear();
+        withRemoteSystem = false;
+        withUser = false;
+        withModules = false;
+        withServices = false;
+        verbose = false;
+        noHeaders = false;
     }
 
     public List<String> build() {

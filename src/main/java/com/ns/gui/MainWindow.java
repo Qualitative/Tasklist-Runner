@@ -6,17 +6,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 
-import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 import com.ns.gui.controller.GuiController;
-import com.ns.util.BoxLayoutUtils;
-import com.ns.util.GuiTools;
 
 public class MainWindow extends JFrame {
+
+    private static final long serialVersionUID = -606059414137653502L;
 
     private GuiController controller;
 

@@ -1,9 +1,9 @@
 package com.ns.excel;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -20,10 +20,10 @@ import com.ns.model.Task;
 
 public class ExcelConverter {
 
-    private File chartTemplate;
+    private InputStream chartTemplate;
 
     public ExcelConverter(Resource chartTemplate) throws IOException {
-        this.chartTemplate = chartTemplate.getFile();
+        this.chartTemplate = chartTemplate.getInputStream();
     }
 
     public void generateExcelChart(List<Task> tasks, File file) throws IOException, InvalidFormatException {
@@ -31,7 +31,7 @@ public class ExcelConverter {
         int columnTitleRow = 1;
         int rowNum = tasks.size();
 
-        Workbook workbook = new XSSFWorkbook(OPCPackage.open(new FileInputStream(chartTemplate)));
+        Workbook workbook = new XSSFWorkbook(OPCPackage.open(chartTemplate));
 
         Sheet sheet = workbook.getSheetAt(0);
         String sheetName = sheet.getSheetName();

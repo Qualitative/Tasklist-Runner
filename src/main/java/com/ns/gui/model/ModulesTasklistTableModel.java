@@ -8,6 +8,8 @@ import com.ns.model.Task;
 
 public class ModulesTasklistTableModel extends AbstractTableModel implements TasklistTableModel {
 
+    private static final long serialVersionUID = 4947341614837589363L;
+
     private static final int NAME_INDEX = 0;
     private static final int PID_INDEX = 1;
     private static final int MODULES_INDEX = 2;

@@ -11,6 +11,8 @@ import com.ns.filter.LogicOperator;
 
 public class FilterTableModel extends AbstractTableModel {
 
+    private static final long serialVersionUID = -3333826669415913393L;
+
     private static final int NAME_INDEX = 0;
     private static final int OPERATOR_INDEX = 1;
     private static final int VALUE_INDEX = 2;
@@ -81,6 +83,10 @@ public class FilterTableModel extends AbstractTableModel {
     public void addRow(Filter filter) {
         data.add(filter);
         fireTableDataChanged();
+    }
+
+    public List<Filter> getData() {
+        return data;
     }
 
 }

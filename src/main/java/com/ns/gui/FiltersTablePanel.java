@@ -4,8 +4,8 @@ import static javax.swing.Box.createHorizontalGlue;
 import static javax.swing.Box.createHorizontalStrut;
 import static javax.swing.Box.createVerticalStrut;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.List;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -39,14 +39,15 @@ public class FiltersTablePanel extends JPanel {
     public FiltersTablePanel(GuiController controller) {
         this.controller = controller;
 
-        addFilterButton = new JButton("Add");
-        removeFilterButton = new JButton("Remove");
+        addFilterButton = new JButton("Add filter");
+        removeFilterButton = new JButton("Remove filter");
 
         filterTable = new JTable();
         tableModel = new FilterTableModel();
     }
 
     public void init() {
+        controller.setFilterTablePanel(this);
         setLayout(new GridLayout(1, 1));
         JPanel contentPanelV = BoxLayoutUtils.createVerticalPanel();
         JPanel buttonPanel = BoxLayoutUtils.createHorizontalPanel();
@@ -81,6 +82,9 @@ public class FiltersTablePanel extends JPanel {
         });
 
         removeFilterButton.addActionListener(e -> {
+            if (filterTable.isEditing()) {
+                filterTable.getCellEditor().stopCellEditing();
+            }
             int selectedRow = filterTable.getSelectedRow();
             if (selectedRow != -1) {
                 tableModel.removeRow(selectedRow);
@@ -121,6 +125,10 @@ public class FiltersTablePanel extends JPanel {
         }
 
         filterTable.setRowSelectionInterval(row, row);
+    }
+
+    public List<Filter> getFilters() {
+        return tableModel.getData();
     }
 
 }

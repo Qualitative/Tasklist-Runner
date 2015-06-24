@@ -10,6 +10,8 @@ import com.ns.util.TaskParserUtils;
 
 public class VerboseTasklistTableModel extends AbstractTableModel implements TasklistTableModel {
 
+    private static final long serialVersionUID = -4946400519407776358L;
+
     private static final int NAME_INDEX = 0;
     private static final int PID_INDEX = 1;
     private static final int SESSION_NAME_INDEX = 2;

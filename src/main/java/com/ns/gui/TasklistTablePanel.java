@@ -1,6 +1,5 @@
 package com.ns.gui;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.List;
 import java.util.Map;
@@ -11,21 +10,22 @@ import javax.swing.JTable;
 
 import com.google.common.collect.ImmutableMap;
 import com.ns.gui.controller.GuiController;
+import com.ns.gui.model.FullTasklistTableModel;
 import com.ns.gui.model.GroupByNameTasklistTableModel;
 import com.ns.gui.model.ModulesTasklistTableModel;
 import com.ns.gui.model.ServicesTasklistTableModel;
 import com.ns.gui.model.StandardTasklistTableModel;
 import com.ns.gui.model.TasklistTableModel;
-import com.ns.gui.model.FullTasklistTableModel;
 import com.ns.gui.model.VerboseTasklistTableModel;
 import com.ns.model.Task;
 import com.ns.util.TableUtils;
 
 public class TasklistTablePanel extends JPanel {
 
-    private GuiController controller;
+    private static final long serialVersionUID = 8887739783045500300L;
 
-    private JTable table = new JTable();
+    private GuiController controller;
+    private JTable table;
 
     private Map<DisplayMode, TasklistTableModel> modeToModelMap = ImmutableMap
             .<DisplayMode, TasklistTableModel> builder().put(DisplayMode.STANDARD, new StandardTasklistTableModel())
@@ -37,6 +37,7 @@ public class TasklistTablePanel extends JPanel {
 
     public TasklistTablePanel(GuiController controller) {
         this.controller = controller;
+        this.table = new JTable();
     }
 
     public void init() {

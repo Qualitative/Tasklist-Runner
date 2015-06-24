@@ -8,6 +8,8 @@ import com.ns.model.Task;
 
 public class GroupByNameTasklistTableModel extends AbstractTableModel implements TasklistTableModel {
 
+    private static final long serialVersionUID = -7339568877258826585L;
+
     private static final int NAME_INDEX = 0;
     private static final int MEMORY_USAGE_INDEX = 1;
 

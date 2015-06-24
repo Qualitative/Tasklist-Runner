@@ -3,16 +3,13 @@ package com.ns.filter;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.ns.model.Status;
 
-// TODO: cover other filters
 public class TasklistFilterBuilderTest {
 
     private TasklistFilterBuilder builder;
@@ -23,21 +20,19 @@ public class TasklistFilterBuilderTest {
     }
 
     @Test
-    public void shouldBuildCorrectCommandListForStatusFilter() {
+    public void shouldBuildCorrectCommandList() {
         // Given
-        Map<LogicOperator, List<Status>> criteria = Maps.newLinkedHashMap();
-        criteria.put(LogicOperator.EQUALS, Lists.newArrayList(Status.RUNNING, Status.UNKNOWN));
-        criteria.put(LogicOperator.NOT_EQUALS, Lists.newArrayList(Status.NOT_RESPONDING));
+        Filter filter1 = new Filter(FilterName.STATUS, LogicOperator.EQUALS, Status.UNKNOWN.toString());
+        Filter filter2 = new Filter(FilterName.STATUS, LogicOperator.NOT_EQUALS, Status.NOT_RESPONDING.toString());
+        List<Filter> filters = Lists.newArrayList(filter1, filter2);
         // When
-        List<String> filter = builder.addStatusFilter(criteria, false).build();
+        List<String> filter = builder.buildFiltersCommand(filters);
         // Then
-        assertEquals(6, filter.size());
+        assertEquals(4, filter.size());
         assertEquals(TasklistFilterBuilder.FI, filter.get(0));
-        assertEquals("\"STATUS eq Running\"", filter.get(1));
+        assertEquals("\"STATUS eq Unknown\"", filter.get(1));
         assertEquals(TasklistFilterBuilder.FI, filter.get(2));
-        assertEquals("\"STATUS eq Unknown\"", filter.get(3));
-        assertEquals(TasklistFilterBuilder.FI, filter.get(4));
-        assertEquals("\"STATUS ne Not Responding\"", filter.get(5));
+        assertEquals("\"STATUS ne Not Responding\"", filter.get(3));
     }
 
 }
